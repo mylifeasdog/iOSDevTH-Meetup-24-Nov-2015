@@ -18,13 +18,15 @@ func downloadFile(URL: NSURL) -> Future<ErrorType, NSData>
 {
     return Future()
     {
+        callback in
+        
         if let data = NSData(contentsOfURL: URL)
         {
-            $0(.Success(data))
+            callback(.Success(data))
         }
         else
         {
-            $0(.Failure(DownloadErrorDomain.ServerTimeout))
+            callback(.Failure(DownloadErrorDomain.ServerTimeout))
         }
     }
 }
@@ -33,17 +35,19 @@ func requestUserInfo(userID: String) -> Future<ErrorType, User>
 {
     return Future()
     {
+        callback in
+        
         let imagePath = NSBundle.mainBundle().pathForResource(userID.lowercaseString, ofType: "jpeg")
         let imageURLPath = imagePath.map() { NSURL(fileURLWithPath: $0) }
         let user = imageURLPath.map() { User(avatarURL: $0) }
         
         if let user = user
         {
-            $0(.Success(user))
+            callback(.Success(user))
         }
         else
         {
-            $0(.Failure(UserErrorDomain.UserNotFound))
+            callback(.Failure(UserErrorDomain.UserNotFound))
         }
     }
 }

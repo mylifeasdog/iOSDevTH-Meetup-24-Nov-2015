@@ -112,7 +112,9 @@ func loadAvatar(userID: String, callback: ImageCallback)
 // Fail
 loadAvatar("Grumpy_Cat")
 {
-    if let error = $0
+    (error, image) in
+    
+    if let error = error
     {
         do
         {
@@ -131,7 +133,7 @@ loadAvatar("Grumpy_Cat")
             print("There is an error.")
         }
     }
-    else if let image = $1
+    else if let image = image
     {
         image
     }
@@ -144,7 +146,9 @@ loadAvatar("Grumpy_Cat")
 // Success
 loadAvatar("Nyan_Cat")
 {
-    if let error = $0
+    (error, image) in
+        
+    if let error = error
     {
         do
         {
@@ -163,7 +167,7 @@ loadAvatar("Nyan_Cat")
             print("There is an error.")
         }
     }
-    else if let image = $1
+    else if let image = image
     {
         image
     }

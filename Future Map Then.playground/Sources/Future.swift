@@ -24,34 +24,38 @@ extension Future
     public func map<T>(f: Value -> T) -> Future<Error, T>
     {
         return Future<Error, T>()
-            {
-                callback in
+        {
+            callback in
                 
-                self.start()
-                    {
-                        switch $0
-                        {
-                        case .Success(let value): callback(Result.Success(f(value)))
-                        case .Failure(let error): callback(Result.Failure(error))
-                        }
+            self.start()
+            {
+                result in
+                
+                switch result
+                {
+                    case .Success(let value): callback(Result.Success(f(value)))
+                    case .Failure(let error): callback(Result.Failure(error))
                 }
+            }
         }
     }
     
     public func then<T>(f: Value -> Future<Error, T>) -> Future<Error, T>
     {
         return Future<Error, T>()
-            {
-                callback in
+        {
+            callback in
                 
-                self.start()
-                    {
-                        switch $0
-                        {
-                        case .Success(let value): f(value).start(callback)
-                        case .Failure(let error): callback(Result.Failure(error))
-                        }
+            self.start()
+            {
+                result in
+                    
+                switch result
+                {
+                    case .Success(let value): f(value).start(callback)
+                    case .Failure(let error): callback(Result.Failure(error))
                 }
+            }
         }
     }
 }

@@ -38,7 +38,6 @@ func requestUserInfo(userID: String, callback: UserCallback)
     
     if let user = user
     {
-        
         callback(.Success(user))
     }
     else
@@ -51,7 +50,9 @@ func downloadImage(URL: NSURL, callback: ImageCallback)
 {
     downloadFile(URL)
     {
-        switch $0
+        result in
+        
+        switch result
         {
             case .Failure(let error): callback(.Failure(error))
             case .Success(let data): callback(.Success(UIImage(data: data)!))
